@@ -21,6 +21,16 @@ Directory ordering computation.
     for shared libraries.
 */
 
+namespace {
+
+// TODO: is there a CMake built-in function that does this?
+bool StrEndsWith(const std::string& value, const std::string& ending) {
+  return ending.size() <= value.size() &&
+         std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
+}  // anonymous namespace
+
 class cmOrderDirectoriesConstraint
 {
 public:
@@ -81,6 +91,9 @@ public:
       if (dir != this->Directory &&
           cmSystemTools::GetRealPath(dir) !=
             cmSystemTools::GetRealPath(this->Directory) &&
+          // Allow system libraries to be found an a Linuxbrew directory without a warning.
+          !StrEndsWith(this->Directory, "/.linuxbrew/lib64") &&
+          !StrEndsWith(this->Directory, "/.linuxbrew/lib") &&
           this->FindConflict(dir)) {
         // The library will be found in this directory but it is
         // supposed to be found in an implicit search directory.
