@@ -88,7 +88,6 @@ public:
     for (unsigned int i = 0; i < this->OD->OriginalDirectories.size(); ++i) {
       // Check if this directory conflicts with the entry.
       std::string const& dir = this->OD->OriginalDirectories[i];
-      std::cerr << "DEBUG: dir=" << dir << ", this->Directory=" << this->Directory << std::endl;
       if (dir != this->Directory &&
           cmSystemTools::GetRealPath(dir) !=
             cmSystemTools::GetRealPath(this->Directory) &&
