@@ -88,12 +88,13 @@ public:
     for (unsigned int i = 0; i < this->OD->OriginalDirectories.size(); ++i) {
       // Check if this directory conflicts with the entry.
       std::string const& dir = this->OD->OriginalDirectories[i];
+      std::cerr << "DEBUG: dir=" << dir << ", this->Directory=" << this->Directory << std::endl;
       if (dir != this->Directory &&
           cmSystemTools::GetRealPath(dir) !=
             cmSystemTools::GetRealPath(this->Directory) &&
-          // Allow system libraries to be found an a Linuxbrew directory without a warning.
-          !StrEndsWith(this->Directory, "/.linuxbrew/lib64") &&
-          !StrEndsWith(this->Directory, "/.linuxbrew/lib") &&
+          // Allow system libraries to be found in a Linuxbrew directory without a warning.
+          !StrEndsWith(dir, "/.linuxbrew/lib64") &&
+          !StrEndsWith(dir, "/.linuxbrew/lib") &&
           this->FindConflict(dir)) {
         // The library will be found in this directory but it is
         // supposed to be found in an implicit search directory.
